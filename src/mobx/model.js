@@ -59,23 +59,21 @@ class Model {
     }
 
     @action
-    fetchTopics(tab) {
-        if (!tab) {
-            tab = this.currentTab;
-        }
-        let page = this.topics[tab].currentPage + 1;
-        console.log('fetch');
+    fetchTopics(tab = 'all') {
+        console.log(`[action] fetchTopics: ${tab}`);
+        let nextPage = this.topics[tab].currentPage + 1;
         this.fetchState = 'pending';
-        axios.get(`https://cnodejs.org/api/v1/topics?tab=${tab}&page=${page}&limit=100`)
+        axios.get(`https://cnodejs.org/api/v1/topics?tab=${tab}&page=${nextPage}&limit=20`)
             .then((res) => {
                 runInAction(() => {
+                    console.log('[action] fetchTopics success');
                     this.fetchState = 'done';
                     this.topics[tab].currentPage++;
                     this.topics[tab].list = this.topics[tab].list.concat(res.data.data);
                 })
             })
             .catch((err) => {
-                console.log('[action]fetchTopics err:');
+                console.log('[action] fetchTopics err:');
                 console.log(err);
                 runInAction(() => {
                     this.fetchState = 'error';
@@ -85,13 +83,12 @@ class Model {
 
     @action
     switchTab(tab = 'all') {
-        if (this.currentTab === tab) {
-            return;
+        console.log(`[action] switchTab: ${tab}`);
+        if (this.currentTab !== tab) {
+            this.currentTab = tab;
         }
-        this.currentTab = tab;
-        if (this.topics[tab].currentPage !== 0) {
-            return;
-        }
+        this.topics[tab].currentPage = 0;
+        this.topics[tab].list = [];
         this.fetchTopics(tab);
     }
 

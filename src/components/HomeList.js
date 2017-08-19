@@ -13,7 +13,11 @@ class HomeList extends Component {
     }
 
     componentDidMount() {
-        this.props.model.switchTab()
+        this.props.model.switchTab(this.props.match.params.tab);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        nextProps.model.switchTab(nextProps.match.params.tab);
     }
     
     handleScroll(ev) {
@@ -22,7 +26,7 @@ class HomeList extends Component {
         }
         if (this.props.model.fetchState !== 'pending'
             && window.innerHeight - this.visibilitySensor.getBoundingClientRect().bottom > 56) {
-            this.props.model.fetchTopics();
+            this.props.model.fetchTopics(this.props.model.currentTab);
         }
     }
 
@@ -38,22 +42,22 @@ class HomeList extends Component {
                     if (topics.length - index === 3) {
                         return (
                             <HomeItem
+                                key={topic.id}
                                 topic={topic}
-                                setVisibilitySensor={this.setVisibilitySensor}
-                                key={topic.id}>
+                                setVisibilitySensor={this.setVisibilitySensor}>
                             </HomeItem>
                         )
                     } else {
                         return (
                             <HomeItem
-                                topic={topic}
-                                key={topic.id}>
+                                key={topic.id}
+                                topic={topic}>
                             </HomeItem>
                         )
                     }
                 })}
             </ul>
-        )    
+        )
     }
 }
 

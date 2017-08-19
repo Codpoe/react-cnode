@@ -18,7 +18,7 @@ class HomeItem extends Component {
             visit_count,
             create_at,
             author
-        } = this.props.item;
+        } = this.props.topic;
 
         return (
             <div className="home-item" ref={this.props.setVisibilitySensor}>
