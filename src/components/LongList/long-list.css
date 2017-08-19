@@ -1,0 +1,20 @@
+.long-list {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    .list-holder {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: -1;
+    }
+    .list-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+    }
+}
